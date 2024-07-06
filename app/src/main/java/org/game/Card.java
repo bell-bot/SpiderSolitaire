@@ -1,10 +1,13 @@
 package org.game;
 
+import java.io.PrintWriter;
+
 public class Card {
     private final Suits suit;
     private final Ranks rank;
     private Boolean isHidden;
-    private final String playingCardBack = "xx";
+    private final String playingCardBack = "[xxx]";
+    private final PrintWriter printWriter = new PrintWriter(System.out, true);
 
     public Card(Suits suit, Ranks rank, Boolean isHidden) {
         this.suit = suit;
@@ -38,11 +41,15 @@ public class Card {
         return otherCard.getRank().ordinal()-this.rank.ordinal() == 1;
     }
 
-    public String toCardSymbol() {
+    public String getCardString() {
+        if (this.isHidden) {
+            return this.playingCardBack;
+        }
+
         return String.format("[%s%s]", this.rank.getSymbol(), this.suit.getSymbol());
     }
 
     public void printCard() {
-        System.out.print(this.toCardSymbol());
+        printWriter.println(this.getCardString());
     }
 }

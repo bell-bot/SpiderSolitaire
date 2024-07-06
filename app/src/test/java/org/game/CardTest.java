@@ -34,6 +34,22 @@ public class CardTest {
         assertFalse(cardStack.getCards().peek().getIsHidden());
     }
 
+    @Test void testGetCardString_withUnhiddenCard_returnsCorrectString() {
+        Card card = new Card(Suits.HEART, Ranks.TEN);
+        String expectedString = "[10♥]";
+        String actualString = card.getCardString();
+
+        assertEquals(expectedString, actualString);
+    }
+
+    @Test void testGetCardString_withHiddenCard_returnsCorrectString() {
+        Card card = new Card(Suits.HEART, Ranks.TEN, true);
+        String expectedString = "[xxx]";
+        String actualString = card.getCardString();
+
+        assertEquals(expectedString, actualString);
+    }
+
     private CardStack givenCardStack() {
         Card aceSpade = new Card(Suits.SPADE, Ranks.ACE, true);
         Card kingDiamond = new Card(Suits.DIAMOND, Ranks.KING, true);

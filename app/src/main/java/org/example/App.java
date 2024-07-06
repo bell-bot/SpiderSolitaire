@@ -14,7 +14,7 @@ public class App {
 
     public static void main(String[] args) {
 
-        Card aceSpade = new Card(Suits.SPADE, Ranks.ACE);
+        Card aceSpade = new Card(Suits.SPADE, Ranks.KING);
         aceSpade.printCard();
     }
 }
