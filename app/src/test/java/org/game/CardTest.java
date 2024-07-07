@@ -2,11 +2,7 @@ package org.game;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-
 import static org.junit.jupiter.api.Assertions.*;
-
 
 public class CardTest {
 
@@ -22,16 +18,6 @@ public class CardTest {
         Card cardToBeMoved = new Card(Suits.CLUB, Ranks.EIGHT);
 
         assertFalse(cardToBeMoved.canBeMovedToCard(moveToCard));
-    }
-
-    @Test void testFlipTopCard_withTopCardIsHidden_setsCardToUnhidden() {
-        CardStack cardStack = givenCardStack();
-
-        assertTrue(cardStack.getCards().peek().getIsHidden());
-
-        cardStack.flipTopCard();
-
-        assertFalse(cardStack.getCards().peek().getIsHidden());
     }
 
     @Test void testGetCardString_withUnhiddenCard_returnsCorrectString() {
@@ -50,10 +36,22 @@ public class CardTest {
         assertEquals(expectedString, actualString);
     }
 
-    private CardStack givenCardStack() {
-        Card aceSpade = new Card(Suits.SPADE, Ranks.ACE, true);
-        Card kingDiamond = new Card(Suits.DIAMOND, Ranks.KING, true);
-        Card kingSpade = new Card(Suits.SPADE, Ranks.KING, false);
-        return new CardStack(new LinkedList<Card>(Arrays.asList(aceSpade, kingDiamond, kingSpade)));
+    @Test void testIsPartialSuit_WithValidSuit_returnsTrue() {
+        Card card = new Card(Suits.HEART, Ranks.TEN);
+        Card otherCard = new Card(Suits.HEART, Ranks.JACK);
+
+        boolean actualIsPartialSuit = card.isPartialSuit(otherCard);
+
+        assertTrue(actualIsPartialSuit);
     }
+
+    @Test void testIsPartialSuit_WithInvalidSuit_returnsFalse() {
+        Card card = new Card(Suits.HEART, Ranks.TEN);
+        Card otherCard = new Card(Suits.HEART, Ranks.QUEEN);
+
+        boolean actualIsPartialSuit = card.isPartialSuit(otherCard);
+
+        assertFalse(actualIsPartialSuit);
+    }
+
 }
