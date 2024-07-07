@@ -1,34 +1,84 @@
 package org.game;
 
-import java.util.LinkedList;
-
 public class CardStack {
-    private LinkedList<Card> cards;
+    private StackNode topCard;
+    private StackNode bottomCard;
 
-    public CardStack(LinkedList<Card> cards) {
-        this.cards = cards;
+    public CardStack(Card ...cards) {
+        this.push(cards);
     }
 
-    public LinkedList<Card> getCards() {
-        return cards;
+    public StackNode peek() {
+        return this.topCard;
     }
 
-    public Card getTopCard() {
-        return cards.peekFirst();
+    public void push(StackNode node) {
+        this.setBottomCardIfNull(node);
+
+        node.setNextNode(this.topCard);
+        this.topCard = node;
     }
 
-    public void addCard(Card card) {
-        cards.push(card);
+    public void push(StackNode ...nodes) {
+        StackNode nextNode = this.topCard;
+        for (StackNode node: nodes) {
+            this.setBottomCardIfNull(node);
+
+            nextNode = node;
+        }
+
+        topCard = nextNode;
     }
 
-    public Card removeCard() {
-        return cards.pop();
+    public void push(Card ...cards) {
+        StackNode nextNode = this.topCard;
+        for (Card card: cards) {
+            nextNode = new StackNode(card, nextNode);
+
+            this.setBottomCardIfNull(nextNode);
+        }
+
+        topCard = nextNode;
     }
 
-    public void flipTopCard() {
-        Card topCard = cards.pop();
-        topCard.setIsHidden(false);
-        cards.push(topCard);
+    public void push(CardStack cardStack) {
+        cardStack.bottomCard.setNextNode(this.topCard);
+
+        this.topCard = cardStack.topCard;
+    }
+
+    public StackNode pop() {
+        StackNode newTopCard = this.topCard.unsetNextNode();
+
+        StackNode previousTopCard = this.topCard;
+
+        this.topCard = newTopCard;
+
+        return previousTopCard;
+    }
+
+    public StackNode getBottomCard() {
+        return this.bottomCard;
+    }
+
+    public boolean isValidStack() {
+        StackNode currentNode = this.topCard;
+        while(currentNode.hasNext()) {
+            Card currentCard = currentNode.getCard();
+            Card nextCard = currentNode.getNextNode().getCard();
+            if(!currentCard.isPartialSuit(nextCard)) {
+                return false;
+            }
+            currentNode = currentNode.getNextNode();
+        }
+
+        return true;
+    }
+
+    private void setBottomCardIfNull(StackNode node) {
+        if (this.bottomCard == null) {
+            this.bottomCard = node;
+        }
     }
 
 }
