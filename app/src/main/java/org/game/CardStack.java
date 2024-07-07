@@ -61,7 +61,7 @@ public class CardStack {
         return this.bottomCard;
     }
 
-    public boolean isValidStack() {
+    public boolean isValidSuit() {
         StackNode currentNode = this.topCard;
         while(currentNode.hasNext()) {
             Card currentCard = currentNode.getCard();

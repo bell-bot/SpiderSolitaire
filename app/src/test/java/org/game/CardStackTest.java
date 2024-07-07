@@ -92,6 +92,21 @@ public class CardStackTest {
         thenCardsEqual(expectedTopCard, actualTopCard);
     }
 
+    @Test void testIsValidSuit_withInvalidSuit_returnsFalse() {
+        CardStack cardStack = givenCardStack();
+        assertFalse(cardStack.isValidSuit());
+    }
+
+    @Test void testIsValidSuit_withValidSuit_returnsTrue() {
+        Card card1 = new Card(Suits.DIAMOND, Ranks.FIVE);
+        Card card2 = new Card(Suits.DIAMOND, Ranks.SIX);
+        Card card3 = new Card(Suits.DIAMOND, Ranks.SEVEN);
+        Card card4 = new Card(Suits.DIAMOND, Ranks.EIGHT);
+
+        CardStack cardStack = new CardStack(card4, card3, card2, card1);
+        assertTrue(cardStack.isValidSuit());
+    }
+
     private CardStack givenCardStack() {
         Card aceSpade = new Card(Suits.SPADE, Ranks.ACE);
         Card kingDiamond = new Card(Suits.DIAMOND, Ranks.KING );
